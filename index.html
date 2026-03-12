@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IF THIS BOARD COULD TALK | State & Broad 1945</title>
+    <style>
+        :root { 
+            --cork: #d4c4a8; 
+            --paper: #fdfdfd; 
+            --accent: #9333ea; 
+            --wood: #5d4037;
+        }
+
+        /* Responsive Body to fix "Bottom of Screen" issues */
+        body { 
+            background: #3d2b1f; 
+            color: #333; 
+            font-family: 'Courier New', monospace; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Adaptive Board: Shrinks to fit your monitor */
+        .board { 
+            background: var(--cork); 
+            width: 95vw;
+            height: 85vh; /* Reduced height to ensure it fits above taskbars */
+            max-width: 1200px;
+            max-height: 800px;
+            padding: 20px; 
+            border: 12px solid var(--wood); 
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.3), 20px 20px 40px rgba(0,0,0,0.5); 
+            position: relative; 
+            box-sizing: border-box;
+        }
+        
+        .pin { 
+            width: 16px; height: 16px; 
+            background: red; 
+            border-radius: 50%; 
+            position: absolute; 
+            top: -8px; left: 50%; 
+            transform: translateX(-50%); 
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3); 
+            z-index: 5;
+        }
+
+        .note { 
+            background: var(--paper); 
+            padding: 12px; 
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2); 
+            position: absolute; 
+            transition: all 0.3s ease; 
+            cursor: pointer; 
+        }
+
+        .note:hover { 
+            transform: scale(1.05) rotate(0deg) !important; 
+            z-index: 50; 
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* REPOSITIONED TO FIX OVERLAP */
+        #main-photo { 
+            width: 42%; 
+            top: 12%; 
+            left: 28%; 
+            transform: rotate(-1deg); 
+        }
+
+        #clock-detail { 
+    width: 25%; 
+    top: 5%; /* Moved up from 15% to 5% */
+    right: 3%; 
+    transform: rotate(2deg); 
+}
+
+        #bottle-detail { 
+            width: 20%; 
+            bottom: 20%; 
+            left: 3%; 
+            transform: rotate(-4deg); 
+        }
+
+        .note img { 
+    width: 100%; 
+    max-height: 50vh; /* This ensures no image is taller than half the screen */
+    object-fit: contain; /* Keeps the photo from looking squashed */
+    filter: sepia(0.1); 
+    display: block; 
+}
+
+        /* Speech Overlay */
+        #speech-box { 
+            position: absolute; 
+            bottom: 20%; 
+            right: 5%; 
+            width: 35%; 
+            background: #fff; 
+            border: 2px solid var(--accent); 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 8px 8px 0 var(--accent); 
+            display: none; 
+            z-index: 100; 
+        }
+
+        #speech-box h2 { color: var(--accent); margin: 0 0 10px 0; font-size: 1rem; text-transform: uppercase; }
+        #speech-box p { line-height: 1.4; font-size: 0.9rem; margin-bottom: 12px; }
+        
+        .close { float: right; cursor: pointer; color: #999; font-weight: bold; font-size: 0.75rem; }
+        .credit { font-size: 0.8rem; color: #777; border-top: 1px solid #ddd; padding-top: 8px; font-weight: bold; }
+
+        .headline { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-weight: bold; background: white; padding: 4px 20px; border: 2px solid black; z-index: 2; font-size: 0.9rem; }
+        
+        .stamp { 
+            position: absolute; top: 15px; left: 15px; 
+            border: 2px solid #8b0000; color: #8b0000; 
+            padding: 4px 12px; transform: rotate(-15deg); 
+            font-weight: bold; opacity: 0.4; font-size: 1rem; 
+        }
+
+        /* News Ticker Animation */
+        .ticker-wrap {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 10px 0;
+            border-top: 3px solid var(--wood);
+            z-index: 100;
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker-move 30s linear infinite;
+        }
+
+        .ticker-item {
+            padding: 0 40px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        @keyframes ticker-move {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="board">
+    <div class="stamp">TRENTONIANA <br> ARCHIVE 1946</div>
+    <div class="headline">ITEM #6940: STATE & BROAD CROSSROADS</div>
+
+    <div class="note" id="main-photo" onclick="speak('main')">
+        <div class="pin"></div>
+        <img src="images/IMG_7442.jpeg" alt="The Intersection">
+        <p style="text-align:center; font-size: 0.6rem; margin: 6px 0 0 0;">DOWNTOWN HUB (CIRCA 1945)</p>
+    </div>
+
+    <div class="note" id="clock-detail" onclick="speak('clock')">
+        <div class="pin" style="background: blue;"></div>
+        <img src="images/IMG_7445.jpeg" alt="The Clock">
+        <p style="text-align:center; font-size: 0.6rem; margin: 6px 0 0 0;">THE BALLANTINE WATCHMAN</p>
+    </div>
+
+    <div class="note" id="bottle-detail" onclick="speak('bottle')">
+        <div class="pin" style="background: green;"></div>
+        <img src="images/IMG_7444.jpeg" alt="The Bottle">
+        <p style="text-align:center; font-size: 0.6rem; margin: 6px 0 0 0;">INDUSTRIAL ARTIFACT: ALE SIGN</p>
+    </div>
+
+    <div id="speech-box">
+        <span class="close" onclick="stopAudio()">[x] CLOSE</span>
+        <h2 id="title"></h2>
+        <p id="message"></p>
+        <div class="credit">
+            Voices generated by <span style="color: var(--accent);">ElevenLabs</span>
+        </div>
+    </div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">TRENTON MAKES, THE WORLD TAKES</div>
+            <div class="ticker-item">BALLANTINE ALE: PURITY, BODY, FLAVOR</div>
+            <div class="ticker-item">WELCOME HOME TO OUR ARMED FORCES</div>
+            <div class="ticker-item">MEYERS BEAUTY SCHOOL NOW ENROLLING</div>
+            <div class="ticker-item">DAILY RUSH AT STATE & BROAD CONTINUES</div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
